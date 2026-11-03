@@ -1,0 +1,7 @@
+# Only the website files are published.
+# Everything else in this folder (notes, design files, screenshots) stays on my computer.
+*
+!.gitignore
+!index.html
+!style.css
+!script.js

@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Waste Reduction in Malaysia</title>
+    <meta name="description" content="Facts, games and tips about food waste, plastic waste, recycling and textile waste in Malaysia.">
+    <link rel="stylesheet" href="style.css">
+    <script>
+        // load dark mode before the page shows, so it doesn't flash white
+        try {
+            let savedTheme = localStorage.getItem("theme");
+            let systemDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+            if (savedTheme == "dark" || (savedTheme == null && systemDark)) {
+                document.documentElement.classList.add("dark");
+            }
+        } catch (error) {
+            // if saving is blocked, the page just starts in light mode
+        }
+    </script>
+</head>
+<body>
+
+    <!-- ===== HEADER (site name + tab buttons) ===== -->
+    <header>
+        <div class="header-inner">
+            <p class="logo">Waste Reduction in Malaysia</p>
+            <nav class="tabs">
+                <button class="tab-button active" id="btn-home" onclick="showTab('home')">Home</button>
+                <button class="tab-button" id="btn-food" onclick="showTab('food')">Food Waste</button>
+                <button class="tab-button" id="btn-plastic" onclick="showTab('plastic')">Plastic Waste</button>
+                <button class="tab-button" id="btn-recycling" onclick="showTab('recycling')">Recycling</button>
+                <button class="tab-button" id="btn-textile" onclick="showTab('textile')">Textile Waste</button>
+                <button class="tab-button" id="btn-feedback" onclick="showTab('feedback')">Feedback</button>
+            </nav>
+
+            <!-- Dark mode / light mode button. Icons from Lucide (lucide.dev), ISC licence -->
+            <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to dark mode" title="Switch to dark mode">
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                </svg>
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="4" />
+                    <path d="M12 2v2" />
+                    <path d="M12 20v2" />
+                    <path d="m4.93 4.93 1.41 1.41" />
+                    <path d="m17.66 17.66 1.41 1.41" />
+                    <path d="M2 12h2" />
+                    <path d="M20 12h2" />
+                    <path d="m6.34 17.66-1.41 1.41" />
+                    <path d="m19.07 4.93-1.41 1.41" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- ===================== HOME TAB ===================== -->
+        <section id="home" class="tab-content active">
+
+            <div class="banner">
+                <h1>Small habits, less waste</h1>
+                <p>Every day, Malaysians throw away thousands of tonnes of food, plastic and clothes. This website looks at four kinds of waste in Malaysia. Each tab has real facts with sources, something to try, and easy ways to waste less.</p>
+                <button class="big-button" onclick="showTab('food')">Start with Food Waste</button>
+            </div>
+
+            <div class="section">
+                <h2>Guess the number</h2>
+                <p>How much food that was still good to eat did Malaysians throw away <strong>every day</strong> in 2025?</p>
+                <div class="choices">
+                    <button class="choice-button guess-button" onclick="checkGuess(this, false)">About 600 tonnes</button>
+                    <button class="choice-button guess-button" onclick="checkGuess(this, true)">About 6,000 tonnes</button>
+                    <button class="choice-button guess-button" onclick="checkGuess(this, false)">About 60,000 tonnes</button>
+                </div>
+                <p id="guess-result" class="result"></p>
+            </div>
+
+            <div class="section">
+                <h2>Pick a topic</h2>
+                <div class="topic-grid">
+                    <div class="topic-card">
+                        <h3>Food Waste</h3>
+                        <p>Why good food ends up in the bin, and how to rescue your leftovers.</p>
+                        <button class="small-button" onclick="showTab('food')">Open Food Waste</button>
+                    </div>
+                    <div class="topic-card">
+                        <h3>Plastic Waste</h3>
+                        <p>Count the single-use plastic you use in a day, and find a swap for each one.</p>
+                        <button class="small-button" onclick="showTab('plastic')">Open Plastic Waste</button>
+                    </div>
+                    <div class="topic-card">
+                        <h3>Recycling</h3>
+                        <p>Learn which bin is which, then play the sorting game.</p>
+                        <button class="small-button" onclick="showTab('recycling')">Open Recycling</button>
+                    </div>
+                    <div class="topic-card">
+                        <h3>Textile Waste</h3>
+                        <p>Find out what happens to old clothes, and what to do with yours.</p>
+                        <button class="small-button" onclick="showTab('textile')">Open Textile Waste</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>My pledges</h2>
+                <p id="pledge-summary">You haven't picked any habits yet. Every topic tab has tips you can pledge to try.</p>
+                <ul id="pledge-list" class="pledge-list"></ul>
+                <button id="clear-pledges" class="small-button hidden" onclick="clearPledges()">Clear my pledges</button>
+            </div>
+        </section>
+
+
+        <!-- ===================== FOOD WASTE TAB ===================== -->
+        <section id="food" class="tab-content">
+
+            <div class="banner">
+                <h1>Food Waste</h1>
+                <p>A lot of the food Malaysians throw away was still good to eat. Most of it ends up in landfills.</p>
+            </div>
+
+            <div class="two-columns">
+                <div>
+                    <h2>The facts</h2>
+                    <ul class="fact-list">
+                        <li>
+                            <p>In 2025, Malaysians threw away about <strong>6,000 tonnes</strong> of food that was still good to eat <strong>every day</strong>. In 2024 it was about 5,000 tonnes a day.</p>
+                            <p class="source">Source: <a href="https://www.nst.com.my/news/nation/2026/06/1463430/malaysians-throw-away-6000-tonnes-edible-food-daily" target="_blank" rel="noopener">New Straits Times, June 2026</a></p>
+                        </li>
+                        <li>
+                            <p>Each Malaysian wastes about <strong>81 kg</strong> of food a year. The world average is 79 kg.</p>
+                            <p class="source">Source: <a href="https://www.thestar.com.my/news/nation/2026/07/09/wastage-traced-to-poor-food-management" target="_blank" rel="noopener">The Star, July 2026</a>, reporting the UNEP Food Waste Index Report 2024</p>
+                        </li>
+                        <li>
+                            <p>During Ramadan 2023, an <strong>extra 75,000 tonnes</strong> of food waste was expected, much of it from bazaars and buffets.</p>
+                            <p class="source">Source: <a href="https://www.nst.com.my/news/nation/2023/03/884724/extra-75000-tonnes-food-waste-expected-during-ramadan" target="_blank" rel="noopener">New Straits Times, March 2023</a></p>
+                        </li>
+                        <li>
+                            <p>Around the world, <strong>1.05 billion tonnes</strong> of food was wasted in 2022, and <strong>60%</strong> of it came from homes.</p>
+                            <p class="source">Source: <a href="https://www.unep.org/resources/publication/food-waste-index-report-2024" target="_blank" rel="noopener">UNEP Food Waste Index Report 2024</a></p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Leftover rescue activity -->
+                <div class="activity">
+                    <h2>Leftover rescue</h2>
+                    <p>Tick what's left in your fridge, and we'll suggest something to cook with it instead of throwing it away.</p>
+                    <div class="check-group">
+                        <label class="check-pill"><input type="checkbox" id="lf-rice"> Rice</label>
+                        <label class="check-pill"><input type="checkbox" id="lf-egg"> Eggs</label>
+                        <label class="check-pill"><input type="checkbox" id="lf-bread"> Bread</label>
+                        <label class="check-pill"><input type="checkbox" id="lf-banana"> Old bananas</label>
+                        <label class="check-pill"><input type="checkbox" id="lf-veg"> Vegetables</label>
+                        <label class="check-pill"><input type="checkbox" id="lf-chicken"> Chicken</label>
+                    </div>
+                    <button class="big-button" onclick="rescueLeftovers()">What can I cook?</button>
+                    <p id="rescue-result" class="result"></p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>What you can do</h2>
+                <ul class="tip-list">
+                    <li><span>Take only what you can finish at buffets.</span><button class="pledge-button" data-tip="Take only what I can finish at buffets." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Check your fridge before buying more food.</span><button class="pledge-button" data-tip="Check the fridge before buying more food." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Eat leftovers the next day, or turn them into a new meal.</span><button class="pledge-button" data-tip="Eat my leftovers or turn them into a new meal." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Share extra food with family, friends or neighbours.</span><button class="pledge-button" data-tip="Share extra food instead of throwing it away." onclick="togglePledge(this)">I'll try this</button></li>
+                </ul>
+            </div>
+
+            <div class="next-row">
+                <button class="big-button" onclick="showTab('plastic')">Next: Plastic Waste</button>
+            </div>
+        </section>
+
+
+        <!-- ===================== PLASTIC WASTE TAB ===================== -->
+        <section id="plastic" class="tab-content">
+
+            <div class="banner">
+                <h1>Plastic Waste</h1>
+                <p>Bags, straws, cups and takeaway boxes are used for a few minutes, then thrown away. Plastic can stay in the environment for a very long time.</p>
+            </div>
+
+            <div class="two-columns">
+                <div>
+                    <h2>The facts</h2>
+                    <ul class="fact-list">
+                        <li>
+                            <p>Each Malaysian uses about <strong>16.78 kg</strong> of plastic packaging a year. That was the highest of the six Asian countries in a WWF study.</p>
+                            <p class="source">Source: <a href="https://www.malaymail.com/news/malaysia/2020/09/21/wwf-malaysia-report-tapau-culture-major-contributor-to-countrys-plastic-was/1905303" target="_blank" rel="noopener">Malay Mail, September 2020</a>, reporting WWF-Malaysia</p>
+                        </li>
+                        <li>
+                            <p>The same report found that buying <strong>takeaway food and drinks</strong> is a major cause of Malaysia's plastic waste.</p>
+                            <p class="source">Source: <a href="https://www.malaymail.com/news/malaysia/2020/09/21/wwf-malaysia-report-tapau-culture-major-contributor-to-countrys-plastic-was/1905303" target="_blank" rel="noopener">Malay Mail, September 2020</a></p>
+                        </li>
+                        <li>
+                            <p>Since <strong>1 January 2017</strong>, shops in Selangor have charged <strong>20 sen</strong> for each plastic bag.</p>
+                            <p class="source">Source: <a href="https://fmtv5.freemalaysiatoday.com/category/nation/2017/07/24/rm1-87-million-collected-from-20-sen-charge-on-plastic-bags" target="_blank" rel="noopener">Free Malaysia Today, July 2017</a></p>
+                        </li>
+                        <li>
+                            <p>But in 2023, many people were still paying for plastic bags instead of bringing their own.</p>
+                            <p class="source">Source: <a href="https://www.thestar.com.my/news/nation/2023/06/06/20sen-charge-not-deterring-public-from-using-plastic-bags" target="_blank" rel="noopener">The Star, June 2023</a></p>
+                        </li>
+                        <li>
+                            <p>Malaysia's <strong>Roadmap Towards Zero Single-Use Plastics</strong> aims to stop single-use plastics by 2030.</p>
+                            <p class="source">Source: <a href="https://leap.unep.org/en/countries/my/national-legislation/malaysias-roadmap-towards-zero-single-use-plastics-2018-2030" target="_blank" rel="noopener">UNEP Law and Environment Assistance Platform</a></p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- My plastic day activity -->
+                <div class="activity">
+                    <h2>My plastic day</h2>
+                    <p>Tap every single-use plastic item you used today.</p>
+                    <div class="choices">
+                        <button class="choice-button plastic-item" data-swap="Plastic bag: keep a foldable bag in your school bag." onclick="togglePlastic(this)">Plastic bag</button>
+                        <button class="choice-button plastic-item" data-swap="Straw: drink from the cup, or bring a metal straw." onclick="togglePlastic(this)">Straw</button>
+                        <button class="choice-button plastic-item" data-swap="Bubble tea cup: bring your own tumbler." onclick="togglePlastic(this)">Bubble tea cup</button>
+                        <button class="choice-button plastic-item" data-swap="Water bottle: refill a reusable bottle." onclick="togglePlastic(this)">Water bottle</button>
+                        <button class="choice-button plastic-item" data-swap="Takeaway box: bring your own food container." onclick="togglePlastic(this)">Takeaway box</button>
+                        <button class="choice-button plastic-item" data-swap="Plastic spoon or fork: keep a metal spoon and fork in your bag." onclick="togglePlastic(this)">Plastic spoon or fork</button>
+                        <button class="choice-button plastic-item" data-swap="Cling wrap: use a container with a lid." onclick="togglePlastic(this)">Cling wrap</button>
+                    </div>
+                    <p id="plastic-count" class="result">You haven't picked anything yet.</p>
+                    <ul id="swap-list" class="swap-list"></ul>
+
+                    <h3>The 20 sen calculator</h3>
+                    <label for="bag-input">How many plastic bags does your family pay for in a week?</label>
+                    <div class="input-row">
+                        <input type="number" id="bag-input" min="0" max="500" value="5">
+                        <button class="big-button" onclick="calculateBags()">Calculate</button>
+                    </div>
+                    <p id="bag-result" class="result"></p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>What you can do</h2>
+                <ul class="tip-list">
+                    <li><span>Carry a reusable shopping bag.</span><button class="pledge-button" data-tip="Carry a reusable shopping bag." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Say "no straw, please" when you order a drink.</span><button class="pledge-button" data-tip="Say no to straws." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Bring your own water bottle to school.</span><button class="pledge-button" data-tip="Bring my own water bottle to school." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Bring a container when you buy takeaway food.</span><button class="pledge-button" data-tip="Bring a container for takeaway food." onclick="togglePledge(this)">I'll try this</button></li>
+                </ul>
+            </div>
+
+            <div class="next-row">
+                <button class="big-button" onclick="showTab('recycling')">Next: Recycling</button>
+            </div>
+        </section>
+
+
+        <!-- ===================== RECYCLING TAB ===================== -->
+        <section id="recycling" class="tab-content">
+
+            <div class="banner">
+                <h1>Recycling</h1>
+                <p>Recycling turns old paper, glass, plastic and tins into new things. It only works if we put the right things in the right bin.</p>
+            </div>
+
+            <div class="two-columns">
+                <div>
+                    <h2>The facts</h2>
+                    <p>Malaysia's recycling rate is going up, but it still hasn't reached the 40% target.</p>
+
+                    <!-- Bar chart made with divs -->
+                    <div class="chart">
+                        <div class="bar-row">
+                            <span class="bar-label">2015</span>
+                            <div class="bar-track"><div class="bar-fill" data-value="15.7"></div></div>
+                            <span class="bar-value">15.7%</span>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">2021</span>
+                            <div class="bar-track"><div class="bar-fill" data-value="31.52"></div></div>
+                            <span class="bar-value">31.52%</span>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">2023</span>
+                            <div class="bar-track"><div class="bar-fill" data-value="35.38"></div></div>
+                            <span class="bar-value">35.38%</span>
+                        </div>
+                        <div class="bar-row">
+                            <span class="bar-label">2025 target</span>
+                            <div class="bar-track"><div class="bar-fill target" data-value="40"></div></div>
+                            <span class="bar-value">40%</span>
+                        </div>
+                    </div>
+                    <p class="source">Sources: <a href="https://www.malaymail.com/news/malaysia/2023/12/19/failure-to-recycle-cost-malaysia-rm291m-in-2023-alone-says-swcorp/108256" target="_blank" rel="noopener">Malay Mail, December 2023</a> (2015 and 2023), <a href="https://www.malaymail.com/news/malaysia/2021/12/13/swcorp-chief-malaysias-recycling-rate-now-at-31.52pc/2028089" target="_blank" rel="noopener">Malay Mail, December 2021</a> (2021), <a href="https://www.nst.com.my/news/nation/2024/08/1087512/malaysia-sets-sights-40pct-recycling-rate-major-retailer-talks" target="_blank" rel="noopener">New Straits Times, August 2024</a> (target)</p>
+
+                    <ul class="fact-list">
+                        <li>
+                            <p>Not recycling cost Malaysia about <strong>RM291 million</strong> in 2023 alone.</p>
+                            <p class="source">Source: <a href="https://www.malaymail.com/news/malaysia/2023/12/19/failure-to-recycle-cost-malaysia-rm291m-in-2023-alone-says-swcorp/108256" target="_blank" rel="noopener">Malay Mail, December 2023</a></p>
+                        </li>
+                        <li>
+                            <p>Malaysia's recycling bins come in three colours: <strong class="blue-text">blue</strong> for paper, <strong class="brown-text">brown</strong> for glass, and <strong class="orange-text">orange</strong> for plastic and tins. Dirty paper and tissue paper don't go in the blue bin.</p>
+                            <p class="source">Source: <a href="https://www.ipohecho.com.my/2021/06/30/recycling-saves-mother-earth/" target="_blank" rel="noopener">Ipoh Echo, June 2021</a></p>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Sorting game -->
+                <div class="activity">
+                    <h2>Sorting game</h2>
+                    <p>Which bin does it go in? Sort 10 everyday things.</p>
+                    <div class="game-top">
+                        <span id="sort-count">Item 1 of 10</span>
+                        <span id="sort-score">Score: 0</span>
+                    </div>
+                    <p id="sort-item" class="sort-item">Newspaper</p>
+                    <div class="bins">
+                        <button class="bin-button blue" onclick="chooseBin('blue')">Blue bin<span>Paper</span></button>
+                        <button class="bin-button brown" onclick="chooseBin('brown')">Brown bin<span>Glass</span></button>
+                        <button class="bin-button orange" onclick="chooseBin('orange')">Orange bin<span>Plastic and tins</span></button>
+                        <button class="bin-button general" onclick="chooseBin('general')">General waste<span>Can't be recycled</span></button>
+                    </div>
+                    <p id="sort-feedback" class="result"></p>
+                    <button id="next-item" class="small-button hidden" onclick="nextItem()">Next item</button>
+                    <button id="play-again" class="small-button hidden" onclick="startGame()">Play again</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>What you can do</h2>
+                <ul class="tip-list">
+                    <li><span>Rinse bottles and cans before you recycle them.</span><button class="pledge-button" data-tip="Rinse bottles and cans before recycling." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Keep paper clean and dry so it can be recycled.</span><button class="pledge-button" data-tip="Keep paper clean and dry for recycling." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Keep a box at home for things you can recycle.</span><button class="pledge-button" data-tip="Keep a recycling box at home." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Find the recycling bins near your home or school.</span><button class="pledge-button" data-tip="Find the recycling bins near me." onclick="togglePledge(this)">I'll try this</button></li>
+                </ul>
+            </div>
+
+            <div class="next-row">
+                <button class="big-button" onclick="showTab('textile')">Next: Textile Waste</button>
+            </div>
+        </section>
+
+
+        <!-- ===================== TEXTILE WASTE TAB ===================== -->
+        <section id="textile" class="tab-content">
+
+            <div class="banner">
+                <h1>Textile Waste</h1>
+                <p>Textile waste is old clothes, shoes, bags and fabric. Many clothes are only worn a few times before they are thrown away.</p>
+            </div>
+
+            <div class="two-columns">
+                <div>
+                    <h2>The facts</h2>
+                    <ul class="fact-list">
+                        <li>
+                            <p>The social enterprise Kloth Cares says Malaysians throw away more than <strong>2,000 tonnes</strong> of textile waste <strong>every day</strong>.</p>
+                            <p class="source">Source: <a href="https://www.malaymail.com/news/life/2019/11/27/looking-to-get-rid-of-old-clothes-send-it-for-recycling-this-weekend-at-klo/1813792" target="_blank" rel="noopener">Malay Mail, November 2019</a></p>
+                        </li>
+                        <li>
+                            <p>A UiTM article gives a smaller number: <strong>195,300 tonnes a year</strong>, which is about 535 tonnes a day. Sources don't always agree, so it's good to check more than one.</p>
+                            <p class="source">Source: <a href="https://ir.uitm.edu.my/id/eprint/136586/" target="_blank" rel="noopener">UiTM Institutional Repository</a></p>
+                        </li>
+                        <li>
+                            <p>Around the world, about <strong>one rubbish truck</strong> of textiles is burned or sent to landfill <strong>every second</strong>.</p>
+                            <p class="source">Source: <a href="https://www.ellenmacarthurfoundation.org/a-new-textiles-economy" target="_blank" rel="noopener">Ellen MacArthur Foundation, A New Textiles Economy (2017)</a></p>
+                        </li>
+                        <li>
+                            <p><strong>Less than 1%</strong> of the material used to make clothes is recycled into new clothes.</p>
+                            <p class="source">Source: <a href="https://www.ellenmacarthurfoundation.org/a-new-textiles-economy" target="_blank" rel="noopener">Ellen MacArthur Foundation, A New Textiles Economy (2017)</a></p>
+                        </li>
+                        <li>
+                            <p>Making one cotton T-shirt can take about <strong>2,700 litres</strong> of water. That's enough for one person to drink for 2.5 years.</p>
+                            <p class="source">Source: <a href="https://www.worldwildlife.org/stories/the-impact-of-a-cotton-t-shirt" target="_blank" rel="noopener">WWF, The Impact of a Cotton T-Shirt</a></p>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="activity">
+                    <!-- Old clothes helper -->
+                    <h2>Old clothes helper</h2>
+                    <p>Got a piece of clothing you don't want? Answer a few questions to find out what to do with it.</p>
+                    <div id="clothes-box" class="question-box">
+                        <p id="clothes-question" class="question">Do you still wear it?</p>
+                        <div class="choices" id="clothes-buttons">
+                            <button class="choice-button" onclick="clothesAnswer('yes')">Yes</button>
+                            <button class="choice-button" onclick="clothesAnswer('no')">No</button>
+                        </div>
+                        <p id="clothes-result" class="result"></p>
+                        <button id="clothes-restart" class="small-button hidden" onclick="restartClothes()">Start again</button>
+                    </div>
+
+                    <!-- T-shirt water calculator -->
+                    <h3>T-shirt water calculator</h3>
+                    <label for="shirt-input">How many cotton T-shirts did you buy this year?</label>
+                    <div class="input-row">
+                        <input type="number" id="shirt-input" min="0" max="200" value="4">
+                        <button class="big-button" onclick="calculateWater()">Calculate</button>
+                    </div>
+                    <p id="water-result" class="result"></p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>What you can do</h2>
+                <ul class="tip-list">
+                    <li><span>Buy fewer clothes, and choose ones that last.</span><button class="pledge-button" data-tip="Buy fewer clothes that last longer." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Swap clothes with friends or family.</span><button class="pledge-button" data-tip="Swap clothes with friends or family." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Fix small holes and loose buttons instead of throwing clothes away.</span><button class="pledge-button" data-tip="Fix my clothes instead of throwing them away." onclick="togglePledge(this)">I'll try this</button></li>
+                    <li><span>Donate clothes that still fit someone else.</span><button class="pledge-button" data-tip="Donate clothes I don't wear." onclick="togglePledge(this)">I'll try this</button></li>
+                </ul>
+            </div>
+
+            <div class="next-row">
+                <button class="big-button" onclick="showTab('feedback')">Next: Feedback</button>
+            </div>
+        </section>
+
+
+        <!-- ===================== FEEDBACK TAB ===================== -->
+        <section id="feedback" class="tab-content">
+
+            <div class="banner">
+                <h1>Feedback</h1>
+                <p>What did you think of this website? Your feedback helps me make it better.</p>
+            </div>
+
+            <!-- Feedback is sent to my email by Formspree (formspree.io) -->
+            <form id="feedback-form" class="feedback-form" action="https://formspree.io/f/mvkkdgqe" method="POST" onsubmit="sendFeedback(event)">
+                <!-- the subject line of the email I get -->
+                <input type="hidden" name="_subject" value="New feedback from Waste Reduction in Malaysia">
+                <!-- hidden box to catch spam bots (people never see it) -->
+                <input type="text" name="_gotcha" class="hidden" tabindex="-1" autocomplete="off">
+
+                <div class="form-row">
+                    <div class="form-field">
+                        <label for="fb-name">Your name</label>
+                        <input type="text" id="fb-name" name="name" autocomplete="name">
+                    </div>
+                    <div class="form-field">
+                        <label for="fb-class">Your class (optional)</label>
+                        <input type="text" id="fb-class" name="class">
+                    </div>
+                </div>
+
+                <div class="form-field">
+                    <label for="fb-email">Your email (optional, if you want a reply)</label>
+                    <input type="email" id="fb-email" name="email" autocomplete="email">
+                </div>
+
+                <div class="form-field">
+                    <label for="fb-favourite">Which tab did you like most?</label>
+                    <select id="fb-favourite" name="favourite_tab">
+                        <option value="Food Waste">Food Waste</option>
+                        <option value="Plastic Waste">Plastic Waste</option>
+                        <option value="Recycling">Recycling</option>
+                        <option value="Textile Waste">Textile Waste</option>
+                    </select>
+                </div>
+
+                <fieldset class="form-field rating">
+                    <legend>How would you rate this website?</legend>
+                    <label class="rating-pill"><input type="radio" name="rating" value="1"> 1</label>
+                    <label class="rating-pill"><input type="radio" name="rating" value="2"> 2</label>
+                    <label class="rating-pill"><input type="radio" name="rating" value="3"> 3</label>
+                    <label class="rating-pill"><input type="radio" name="rating" value="4"> 4</label>
+                    <label class="rating-pill"><input type="radio" name="rating" value="5" checked> 5</label>
+                    <p class="hint">1 means not good, 5 means great.</p>
+                </fieldset>
+
+                <div class="form-field">
+                    <label for="fb-message">Your feedback</label>
+                    <textarea id="fb-message" name="message" rows="5" placeholder="What did you learn? What could be better?"></textarea>
+                </div>
+
+                <button type="submit" id="fb-submit" class="big-button">Send feedback</button>
+                <p id="fb-status" class="result"></p>
+            </form>
+        </section>
+
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-about">
+                <p class="footer-name">Waste Reduction in Malaysia</p>
+                <p>Facts, games and tips to help Malaysians waste less food, plastic and clothes.</p>
+            </div>
+            <div>
+                <p class="footer-heading">Topics</p>
+                <ul class="footer-links">
+                    <li><a href="#food" onclick="showTab('food'); return false;">Food Waste</a></li>
+                    <li><a href="#plastic" onclick="showTab('plastic'); return false;">Plastic Waste</a></li>
+                    <li><a href="#recycling" onclick="showTab('recycling'); return false;">Recycling</a></li>
+                    <li><a href="#textile" onclick="showTab('textile'); return false;">Textile Waste</a></li>
+                </ul>
+            </div>
+            <div>
+                <p class="footer-heading">More</p>
+                <ul class="footer-links">
+                    <li><a href="#home" onclick="showTab('home'); return false;">Home</a></li>
+                    <li><a href="#feedback" onclick="showTab('feedback'); return false;">Send feedback</a></li>
+                    <li><a href="#top" onclick="window.scrollTo(0, 0); return false;">Back to top</a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
