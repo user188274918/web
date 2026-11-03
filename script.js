@@ -452,6 +452,65 @@ function calculateWater() {
 }
 
 
+// ---------- FEEDBACK: MY OWN DROPDOWN ----------
+function toggleDropdown() {
+    let list = document.getElementById("fav-list");
+    let button = document.getElementById("fav-button");
+    list.classList.toggle("hidden");
+
+    if (list.classList.contains("hidden")) {
+        button.setAttribute("aria-expanded", "false");
+    } else {
+        button.setAttribute("aria-expanded", "true");
+        // focus the chosen option so the keyboard can be used
+        list.querySelector(".chosen").focus();
+    }
+}
+
+function closeDropdown() {
+    document.getElementById("fav-list").classList.add("hidden");
+    document.getElementById("fav-button").setAttribute("aria-expanded", "false");
+}
+
+function pickFavourite(option) {
+    let options = document.getElementsByClassName("dropdown-option");
+    for (let i = 0; i < options.length; i++) {
+        options[i].classList.remove("chosen");
+    }
+    option.classList.add("chosen");
+
+    // the hidden input is what gets sent with the form
+    document.getElementById("fb-favourite").value = option.textContent;
+    document.getElementById("fav-text").textContent = option.textContent;
+    closeDropdown();
+    document.getElementById("fav-button").focus();
+}
+
+// close the dropdown when you click somewhere else
+document.addEventListener("click", function (event) {
+    if (!document.getElementById("fav-dropdown").contains(event.target)) {
+        closeDropdown();
+    }
+});
+
+// keyboard: Escape closes it, up and down arrows move between options
+document.getElementById("fav-dropdown").addEventListener("keydown", function (event) {
+    let options = document.getElementsByClassName("dropdown-option");
+    let current = Array.from(options).indexOf(document.activeElement);
+
+    if (event.key == "Escape") {
+        closeDropdown();
+        document.getElementById("fav-button").focus();
+    } else if (event.key == "ArrowDown" && current < options.length - 1) {
+        event.preventDefault();
+        options[current + 1].focus();
+    } else if (event.key == "ArrowUp" && current > 0) {
+        event.preventDefault();
+        options[current - 1].focus();
+    }
+});
+
+
 // ---------- FEEDBACK FORM (sent to my email with Formspree) ----------
 // The Formspree link is in the form's action in index.html.
 // If JavaScript is off, the form still sends the normal way.

@@ -447,13 +447,21 @@
                 </div>
 
                 <div class="form-field">
-                    <label for="fb-favourite">Which tab did you like most?</label>
-                    <select id="fb-favourite" name="favourite_tab">
-                        <option value="Food Waste">Food Waste</option>
-                        <option value="Plastic Waste">Plastic Waste</option>
-                        <option value="Recycling">Recycling</option>
-                        <option value="Textile Waste">Textile Waste</option>
-                    </select>
+                    <!-- my own dropdown, so the open list matches the website -->
+                    <p class="field-label" id="fav-label">Which tab did you like most?</p>
+                    <div class="dropdown" id="fav-dropdown">
+                        <input type="hidden" name="favourite_tab" id="fb-favourite" value="Food Waste">
+                        <button type="button" class="dropdown-button" id="fav-button" onclick="toggleDropdown()" aria-haspopup="true" aria-expanded="false" aria-labelledby="fav-label fav-button">
+                            <span id="fav-text">Food Waste</span>
+                            <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </button>
+                        <div class="dropdown-list hidden" id="fav-list">
+                            <button type="button" class="dropdown-option chosen" onclick="pickFavourite(this)">Food Waste</button>
+                            <button type="button" class="dropdown-option" onclick="pickFavourite(this)">Plastic Waste</button>
+                            <button type="button" class="dropdown-option" onclick="pickFavourite(this)">Recycling</button>
+                            <button type="button" class="dropdown-option" onclick="pickFavourite(this)">Textile Waste</button>
+                        </div>
+                    </div>
                 </div>
 
                 <fieldset class="form-field rating">
