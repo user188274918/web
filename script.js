@@ -1,9 +1,26 @@
 // ===== Waste Reduction in Malaysia: script.js =====
 
 
+// ---------- SMALL HELPERS (used by many parts of the page) ----------
+// Shows a message. type is "good" (green), "bad" (red) or "" (normal)
+function showMessage(element, text, type) {
+    element.textContent = text;
+    element.className = "result " + type;
+}
+
+// Checks what was typed in a number box: not empty, not negative, no decimals
+function isWholeNumber(text) {
+    let number = Number(text);
+    return text != "" && number >= 0 && Number.isInteger(number);
+}
+
+
 // ---------- TABS ----------
 // Hides every tab, then shows the one with the id tabName
 function showTab(tabName) {
+    // check this now, before the old tab gets hidden
+    let pressedTabButton = document.activeElement.classList.contains("tab-button");
+
     let tabs = document.getElementsByClassName("tab-content");
     for (let i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove("active");
@@ -12,13 +29,20 @@ function showTab(tabName) {
     let buttons = document.getElementsByClassName("tab-button");
     for (let i = 0; i < buttons.length; i++) {
         buttons[i].classList.remove("active");
+        buttons[i].removeAttribute("aria-current");
     }
 
     document.getElementById(tabName).classList.add("active");
     document.getElementById("btn-" + tabName).classList.add("active");
+    document.getElementById("btn-" + tabName).setAttribute("aria-current", "page");
 
     // go back to the top of the page
     window.scrollTo(0, 0);
+
+    // buttons like "Next" are hidden now, so keyboard users start at the new heading
+    if (!pressedTabButton) {
+        document.querySelector("#" + tabName + " h1").focus();
+    }
 
     // the recycling chart bars grow when you open that tab
     if (tabName == "recycling") {
@@ -70,12 +94,10 @@ function checkGuess(button, isRight) {
 
     if (isRight) {
         button.classList.add("right");
-        result.textContent = "Correct! It was about 6,000 tonnes of good food every day. Find out more in the Food Waste tab.";
-        result.className = "result good";
+        showMessage(result, "Correct! It was about 6,000 tonnes of good food every day. Find out more in the Food Waste tab.", "good");
     } else {
         button.classList.add("wrong");
-        result.textContent = "Not quite. The answer is about 6,000 tonnes every day. Find out more in the Food Waste tab.";
-        result.className = "result bad";
+        showMessage(result, "Not quite. The answer is about 6,000 tonnes every day. Find out more in the Food Waste tab.", "bad");
     }
 }
 
@@ -200,11 +222,9 @@ function rescueLeftovers() {
     }
 
     if (dish == "") {
-        result.textContent = "Tick at least one food first.";
-        result.className = "result bad";
+        showMessage(result, "Tick at least one food first.", "bad");
     } else {
-        result.textContent = "Try making: " + dish;
-        result.className = "result good";
+        showMessage(result, "Try making: " + dish, "good");
     }
 }
 
@@ -229,16 +249,14 @@ function togglePlastic(button) {
     }
 
     if (count == 0) {
-        countText.textContent = "You haven't picked anything yet.";
-        countText.className = "result";
+        showMessage(countText, "You haven't picked anything yet.", "");
     } else {
         let perYear = count * 365;
         let itemWord = "items";
         if (count == 1) {
             itemWord = "item";
         }
-        countText.textContent = "You used " + count + " single-use plastic " + itemWord + " today. If you did that every day, that's " + perYear.toLocaleString() + " items a year. Try these swaps:";
-        countText.className = "result bad";
+        showMessage(countText, "You used " + count + " single-use plastic " + itemWord + " today. If you did that every day, that's " + perYear.toLocaleString("en-MY") + " items a year. Try these swaps:", "bad");
     }
 }
 
@@ -247,9 +265,8 @@ function calculateBags() {
     let bags = Number(bagInput);
     let result = document.getElementById("bag-result");
 
-    if (bagInput == "" || bags < 0 || isNaN(bags)) {
-        result.textContent = "Please type a number that is 0 or more.";
-        result.className = "result bad";
+    if (!isWholeNumber(bagInput)) {
+        showMessage(result, "Please type a whole number that is 0 or more.", "bad");
         return;
     }
 
@@ -258,11 +275,9 @@ function calculateBags() {
     let bagsPerYear = bags * 52;
 
     if (bags == 0) {
-        result.textContent = "Great! Your family doesn't pay anything for plastic bags.";
-        result.className = "result good";
+        showMessage(result, "Great! Your family doesn't pay anything for plastic bags.", "good");
     } else {
-        result.textContent = "That's " + bagsPerYear + " bags and RM" + ringgit.toFixed(2) + " a year, just on plastic bags. A reusable bag saves that money.";
-        result.className = "result bad";
+        showMessage(result, "That's " + bagsPerYear.toLocaleString("en-MY") + " bags and RM" + ringgit.toFixed(2) + " a year, just on plastic bags. A reusable bag saves that money.", "bad");
     }
 }
 
@@ -298,7 +313,6 @@ let sortItems = [
 
 let currentItem = 0;
 let score = 0;
-let answered = false;
 
 function startGame() {
     currentItem = 0;
@@ -308,7 +322,6 @@ function startGame() {
 }
 
 function showItem() {
-    answered = false;
     document.getElementById("sort-item").textContent = sortItems[currentItem].name;
     document.getElementById("sort-count").textContent = "Item " + (currentItem + 1) + " of " + sortItems.length;
     document.getElementById("sort-score").textContent = "Score: " + score;
@@ -325,10 +338,6 @@ function setBinsDisabled(isDisabled) {
 }
 
 function chooseBin(bin) {
-    if (answered) {
-        return;
-    }
-    answered = true;
     setBinsDisabled(true);
 
     let item = sortItems[currentItem];
@@ -336,11 +345,9 @@ function chooseBin(bin) {
 
     if (bin == item.bin) {
         score = score + 1;
-        feedback.textContent = "Correct! " + item.reason;
-        feedback.className = "result good";
+        showMessage(feedback, "Correct! " + item.reason, "good");
     } else {
-        feedback.textContent = "Not quite. " + item.reason;
-        feedback.className = "result bad";
+        showMessage(feedback, "Not quite. " + item.reason, "bad");
     }
 
     document.getElementById("sort-score").textContent = "Score: " + score;
@@ -379,7 +386,6 @@ let clothesStep = 1;
 
 function clothesAnswer(answer) {
     let question = document.getElementById("clothes-question");
-    let result = document.getElementById("clothes-result");
 
     if (clothesStep == 1) {
         if (answer == "yes") {
@@ -405,9 +411,7 @@ function clothesAnswer(answer) {
 }
 
 function showClothesResult(text) {
-    let result = document.getElementById("clothes-result");
-    result.textContent = text;
-    result.className = "result good";
+    showMessage(document.getElementById("clothes-result"), text, "good");
     document.getElementById("clothes-buttons").classList.add("hidden");
     document.getElementById("clothes-restart").classList.remove("hidden");
 }
@@ -427,9 +431,8 @@ function calculateWater() {
     let shirts = Number(shirtInput);
     let result = document.getElementById("water-result");
 
-    if (shirtInput == "" || shirts < 0 || isNaN(shirts)) {
-        result.textContent = "Please type a number that is 0 or more.";
-        result.className = "result bad";
+    if (!isWholeNumber(shirtInput)) {
+        showMessage(result, "Please type a whole number that is 0 or more.", "bad");
         return;
     }
 
@@ -439,15 +442,13 @@ function calculateWater() {
     let years = shirts * 2.5;
 
     if (shirts == 0) {
-        result.textContent = "No new T-shirts this year. Well done!";
-        result.className = "result good";
+        showMessage(result, "No new T-shirts this year. Well done!", "good");
     } else {
         let shirtWord = "T-shirts";
         if (shirts == 1) {
             shirtWord = "T-shirt";
         }
-        result.textContent = "Making " + shirts + " cotton " + shirtWord + " can take about " + litres.toLocaleString() + " litres of water. That's enough drinking water for one person for about " + years + " years!";
-        result.className = "result bad";
+        showMessage(result, "Making " + shirts + " cotton " + shirtWord + " can take about " + litres.toLocaleString("en-MY") + " litres of water. That's enough drinking water for one person for about " + years + " years!", "bad");
     }
 }
 
@@ -472,7 +473,7 @@ function closeDropdown() {
     document.getElementById("fav-button").setAttribute("aria-expanded", "false");
 }
 
-function pickFavourite(option) {
+function setFavourite(option) {
     let options = document.getElementsByClassName("dropdown-option");
     for (let i = 0; i < options.length; i++) {
         options[i].classList.remove("chosen");
@@ -482,6 +483,10 @@ function pickFavourite(option) {
     // the hidden input is what gets sent with the form
     document.getElementById("fb-favourite").value = option.textContent;
     document.getElementById("fav-text").textContent = option.textContent;
+}
+
+function pickFavourite(option) {
+    setFavourite(option);
     closeDropdown();
     document.getElementById("fav-button").focus();
 }
@@ -493,14 +498,20 @@ document.addEventListener("click", function (event) {
     }
 });
 
-// keyboard: Escape closes it, up and down arrows move between options
+// keyboard: Escape and Tab close it, up and down arrows open it and move between options
 document.getElementById("fav-dropdown").addEventListener("keydown", function (event) {
     let options = document.getElementsByClassName("dropdown-option");
     let current = Array.from(options).indexOf(document.activeElement);
+    let isClosed = document.getElementById("fav-list").classList.contains("hidden");
 
     if (event.key == "Escape") {
         closeDropdown();
         document.getElementById("fav-button").focus();
+    } else if (event.key == "Tab") {
+        closeDropdown();
+    } else if (event.key == "ArrowDown" && isClosed) {
+        event.preventDefault();
+        toggleDropdown();
     } else if (event.key == "ArrowDown" && current < options.length - 1) {
         event.preventDefault();
         options[current + 1].focus();
@@ -524,15 +535,13 @@ function sendFeedback(event) {
     let submitButton = document.getElementById("fb-submit");
 
     if (name == "") {
-        status.textContent = "Please type your name.";
-        status.className = "result bad";
+        showMessage(status, "Please type your name.", "bad");
         document.getElementById("fb-name").focus();
         return;
     }
 
     if (message == "") {
-        status.textContent = "Please write some feedback before sending.";
-        status.className = "result bad";
+        showMessage(status, "Please write some feedback before sending.", "bad");
         document.getElementById("fb-message").focus();
         return;
     }
@@ -552,9 +561,10 @@ function sendFeedback(event) {
     })
     .then(function (response) {
         if (response.ok) {
-            status.textContent = "Thank you, " + name + "! Your feedback was sent.";
-            status.className = "result good";
+            showMessage(status, "Thank you, " + name + "! Your feedback was sent.", "good");
             form.reset();
+            // reset() doesn't know about my own dropdown, so put it back to the first option
+            setFavourite(document.getElementsByClassName("dropdown-option")[0]);
         } else {
             // Formspree sends back a list of what went wrong
             return response.json().then(function (data) {
@@ -563,17 +573,15 @@ function sendFeedback(event) {
                     for (let i = 0; i < data.errors.length; i++) {
                         messages.push(data.errors[i].message);
                     }
-                    status.textContent = "Sorry, your feedback wasn't sent: " + messages.join(", ");
+                    showMessage(status, "Sorry, your feedback wasn't sent: " + messages.join(", "), "bad");
                 } else {
-                    status.textContent = "Sorry, something went wrong. Please try again.";
+                    showMessage(status, "Sorry, something went wrong. Please try again.", "bad");
                 }
-                status.className = "result bad";
             });
         }
     })
     .catch(function () {
-        status.textContent = "Sorry, your feedback couldn't be sent. Check your internet connection and try again.";
-        status.className = "result bad";
+        showMessage(status, "Sorry, your feedback couldn't be sent. Check your internet connection and try again.", "bad");
     })
     .finally(function () {
         submitButton.disabled = false;
