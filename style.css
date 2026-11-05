@@ -270,6 +270,34 @@ main {
     margin-top: 24px;
 }
 
+/* banners that have a photo: text on the left, photo on the right */
+.banner.with-photo {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 40px;
+    align-items: center;
+}
+
+.banner-photo {
+    margin: 0;
+}
+
+.banner-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 14px;
+}
+
+.banner-photo figcaption {
+    font-size: 14px;
+    line-height: 1.4;
+    color: var(--muted);
+    margin-top: 10px;
+}
+
 .section {
     margin-bottom: 56px;
 }
@@ -405,8 +433,22 @@ main {
     flex-direction: column;
 }
 
+.topic-photo {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
 .topic-card h3 {
     margin-top: 0;
+}
+
+.photo-note {
+    margin-top: 14px;
 }
 
 .topic-card p {
@@ -967,6 +1009,16 @@ footer {
 
     .two-columns {
         grid-template-columns: 1fr;
+    }
+
+    /* photo goes under the text, and wider so it isn't too tall */
+    .banner.with-photo {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .banner-photo img {
+        aspect-ratio: 16 / 9;
     }
 }
 

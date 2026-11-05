@@ -59,10 +59,16 @@
         <!-- ===================== HOME TAB ===================== -->
         <section id="home" class="tab-content active">
 
-            <div class="banner">
-                <h1>Small habits, less waste</h1>
-                <p>Every day, Malaysians throw away thousands of tonnes of food, plastic and clothes. This website looks at four kinds of waste in Malaysia. Each tab has real facts with sources, something to try, and easy ways to waste less.</p>
-                <button class="big-button" onclick="showTab('food')">Start with Food Waste</button>
+            <div class="banner with-photo">
+                <div>
+                    <h1>Small habits, less waste</h1>
+                    <p>Every day, Malaysians throw away thousands of tonnes of food, plastic and clothes. This website looks at four kinds of waste in Malaysia. Each tab has real facts with sources, something to try, and easy ways to waste less.</p>
+                    <button class="big-button" onclick="showTab('food')">Start with Food Waste</button>
+                </div>
+                <figure class="banner-photo">
+                    <img src="images/home.jpg" width="1000" height="750" alt="Plastic bottles, wrappers and other rubbish piled up at the edge of the water.">
+                    <figcaption>Bottles, wrappers and other rubbish at the water's edge. Photo: <a href="https://commons.wikimedia.org/wiki/File:Bord_de_l%E2%80%99eau_satur%C3%A9.jpg" target="_blank" rel="noopener">Merstel007</a>, CC0, cropped.</figcaption>
+                </figure>
             </div>
 
             <div class="section">
@@ -80,26 +86,31 @@
                 <h2>Pick a topic</h2>
                 <div class="topic-grid">
                     <div class="topic-card">
+                        <img class="topic-photo" src="images/food.jpg" width="1000" height="750" alt="Oranges, apples, kiwis and aubergines on a table.">
                         <h3>Food Waste</h3>
                         <p>Why good food ends up in the bin, and how to rescue your leftovers.</p>
                         <button class="small-button" onclick="showTab('food')">Open Food Waste</button>
                     </div>
                     <div class="topic-card">
+                        <img class="topic-photo" src="images/plastic.jpg" width="1000" height="666" alt="Plastic bottles and an old light bulb lying on a sandy beach.">
                         <h3>Plastic Waste</h3>
                         <p>Count the single-use plastic you use in a day, and find a swap for each one.</p>
                         <button class="small-button" onclick="showTab('plastic')">Open Plastic Waste</button>
                     </div>
                     <div class="topic-card">
+                        <img class="topic-photo" src="images/recycling.jpg" width="1000" height="750" alt="Hundreds of colourful plastic bottles held behind a metal cage.">
                         <h3>Recycling</h3>
                         <p>Learn which bin is which, then play the sorting game.</p>
                         <button class="small-button" onclick="showTab('recycling')">Open Recycling</button>
                     </div>
                     <div class="topic-card">
+                        <img class="topic-photo" src="images/textile.jpg" width="1000" height="521" alt="Large bags full of used clothes lined up against a wall.">
                         <h3>Textile Waste</h3>
                         <p>Find out what happens to old clothes, and what to do with yours.</p>
                         <button class="small-button" onclick="showTab('textile')">Open Textile Waste</button>
                     </div>
                 </div>
+                <p class="source photo-note">Photo credits are on each topic's tab.</p>
             </div>
 
             <div class="section">
@@ -114,9 +125,15 @@
         <!-- ===================== FOOD WASTE TAB ===================== -->
         <section id="food" class="tab-content">
 
-            <div class="banner">
-                <h1>Food Waste</h1>
-                <p>A lot of the food Malaysians throw away was still good to eat. Most of it ends up in landfills.</p>
+            <div class="banner with-photo">
+                <div>
+                    <h1>Food Waste</h1>
+                    <p>A lot of the food Malaysians throw away was still good to eat. Most of it ends up in landfills.</p>
+                </div>
+                <figure class="banner-photo">
+                    <img src="images/food.jpg" width="1000" height="750" alt="Oranges, apples, kiwis and aubergines on a table.">
+                    <figcaption>Fruit and vegetables that were still good to eat, taken from a shop's rubbish container. Photo: <a href="https://commons.wikimedia.org/wiki/File:Vegetables_from_a_food_retailer%27s_container.jpg" target="_blank" rel="noopener">PizzaToast</a>, CC0, resized.</figcaption>
+                </figure>
             </div>
 
             <div class="two-columns">
@@ -178,9 +195,15 @@
         <!-- ===================== PLASTIC WASTE TAB ===================== -->
         <section id="plastic" class="tab-content">
 
-            <div class="banner">
-                <h1>Plastic Waste</h1>
-                <p>Bags, straws, cups and takeaway boxes are used for a few minutes, then thrown away. Plastic can stay in the environment for a very long time.</p>
+            <div class="banner with-photo">
+                <div>
+                    <h1>Plastic Waste</h1>
+                    <p>Bags, straws, cups and takeaway boxes are used for a few minutes, then thrown away. Plastic can stay in the environment for a very long time.</p>
+                </div>
+                <figure class="banner-photo">
+                    <img src="images/plastic.jpg" width="1000" height="666" alt="Plastic bottles and an old light bulb lying on a sandy beach.">
+                    <figcaption>Plastic bottles left on a beach in Malaysia. Photo: <a href="https://commons.wikimedia.org/wiki/File:Water_Pollution_with_Trash_Disposal_of_Waste_at_the_Garbage_Beach.jpg" target="_blank" rel="noopener">epSos.de</a>, <a href="https://creativecommons.org/licenses/by/2.0" target="_blank" rel="noopener">CC BY 2.0</a>, resized.</figcaption>
+                </figure>
             </div>
 
             <div class="two-columns">
@@ -255,9 +278,15 @@
         <!-- ===================== RECYCLING TAB ===================== -->
         <section id="recycling" class="tab-content">
 
-            <div class="banner">
-                <h1>Recycling</h1>
-                <p>Recycling turns old paper, glass, plastic and tins into new things. It only works if we put the right things in the right bin.</p>
+            <div class="banner with-photo">
+                <div>
+                    <h1>Recycling</h1>
+                    <p>Recycling turns old paper, glass, plastic and tins into new things. It only works if we put the right things in the right bin.</p>
+                </div>
+                <figure class="banner-photo">
+                    <img src="images/recycling.jpg" width="1000" height="750" alt="Hundreds of colourful plastic bottles held behind a metal cage.">
+                    <figcaption>Plastic bottles sorted at a recycling plant in Slovenia. Photo: <a href="https://commons.wikimedia.org/wiki/File:Plastic_bottles_for_recycling.jpg" target="_blank" rel="noopener">Radulf del Maresme</a>, <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a>, resized.</figcaption>
+                </figure>
             </div>
 
             <div class="two-columns">
@@ -342,9 +371,15 @@
         <!-- ===================== TEXTILE WASTE TAB ===================== -->
         <section id="textile" class="tab-content">
 
-            <div class="banner">
-                <h1>Textile Waste</h1>
-                <p>Textile waste is old clothes, shoes, bags and fabric. Many clothes are only worn a few times before they are thrown away.</p>
+            <div class="banner with-photo">
+                <div>
+                    <h1>Textile Waste</h1>
+                    <p>Textile waste is old clothes, shoes, bags and fabric. Many clothes are only worn a few times before they are thrown away.</p>
+                </div>
+                <figure class="banner-photo">
+                    <img src="images/textile.jpg" width="1000" height="521" alt="Large bags full of used clothes lined up against a wall.">
+                    <figcaption>Bags of used clothes sorted for resale at a second-hand shop in Prague. Photo: <a href="https://commons.wikimedia.org/wiki/File:Bags_of_sorted_secondhand_clothing.jpg" target="_blank" rel="noopener">MAKY.OREL</a>, CC0, resized.</figcaption>
+                </figure>
             </div>
 
             <div class="two-columns">
