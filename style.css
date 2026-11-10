@@ -1,4 +1,6 @@
-/* ===== Waste Reduction in Malaysia: style.css ===== */
+/* ===== Waste Reduction in Malaysia: style.css =====
+   The look is based on the facts label on the back of a pack:
+   thick and thin rules, names on the left, numbers on the right. */
 
 /* ----- Colours -----
    All the colours are kept here as variables,
@@ -6,30 +8,17 @@
 :root {
     color-scheme: light;
     --page: #ffffff;
-    --text: #1f2a1f;
-    --text-soft: #3d4a3d;
-    --muted: #4a574a;
-    --heading: #1b5e20;
-    --green: #2e7d32;
-    --green-hover: #1b5e20;
+    --ink: #111111;
+    --soft: #4d4d4d;
+    --hair: #bdbdbd;
+    --wash: #f0f0f0;
+    --green: #1b5e20;
+    --green-hover: #0f3d13;
     --on-green: #ffffff;
-    --banner: #e8f5e9;
-    --panel: #f5faf5;
-    --box: #ffffff;
-    --line: #dde8dd;
-    --pill-line: #b9c9b9;
-    --input-line: #a9bba9;
-    --hover: #e8f5e9;
-    --link: #2e7d32;
-    --link-hover: #1b5e20;
-    --target-bar: #81c784;
-    --selection: #c8e6c9;
-    --focus: #66bb6a;
-    --placeholder: #687568;
-    --bad-text: #8c1d18;
-    --bad-bg: #fdecea;
-    --bad-line: #b3261e;
-    --disabled: #9aa89a;
+    --red: #a3201b;
+    --red-wash: #fbeceb;
+    --placeholder: #6b6b6b;
+    --disabled: #9a9a9a;
     --blue-word: #1565c0;
     --brown-word: #6d4c2f;
     --orange-word: #a65300;
@@ -39,30 +28,17 @@
 html.dark {
     color-scheme: dark;
     --page: #000000;
-    --text: #f2f2f2;
-    --text-soft: #cfcfcf;
-    --muted: #a6a6a6;
-    --heading: #9ad5a5;
-    --green: #2e7d32;
-    --green-hover: #1b5e20;
-    --on-green: #ffffff;
-    --banner: #1a1a1a;
-    --panel: #121212;
-    --box: #000000;
-    --line: #2c2c2c;
-    --pill-line: #4a4a4a;
-    --input-line: #5c5c5c;
-    --hover: #1f1f1f;
-    --link: #9ad5a5;
-    --link-hover: #c8e6c9;
-    --target-bar: #4e8f57;
-    --selection: #3d3d3d;
-    --focus: #81c784;
+    --ink: #f2f2f2;
+    --soft: #b0b0b0;
+    --hair: #444444;
+    --wash: #1a1a1a;
+    --green: #9ad5a5;
+    --green-hover: #c8e6c9;
+    --on-green: #000000;
+    --red: #ffb4ab;
+    --red-wash: #2b1512;
     --placeholder: #8c8c8c;
-    --bad-text: #ffb4ab;
-    --bad-bg: #3a1714;
-    --bad-line: #e57373;
-    --disabled: #4a4a4a;
+    --disabled: #5c5c5c;
     --blue-word: #90caf9;
     --brown-word: #d7a77a;
     --orange-word: #ffb74d;
@@ -76,33 +52,34 @@ html.dark {
 
 /* so the sticky header doesn't cover things you tab to with the keyboard */
 html {
-    scroll-padding-top: 120px;
+    scroll-padding-top: 140px;
 }
 
 body {
     margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 17px;
-    line-height: 1.6;
-    color: var(--text);
+    font-family: "Archivo", Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink);
     background-color: var(--page);
     accent-color: var(--green);
     transition: background-color 0.3s, color 0.3s;
 }
 
 h1, h2, h3 {
-    line-height: 1.2;
-    color: var(--heading);
+    font-weight: 800;
+    line-height: 1.1;
 }
 
 h2 {
-    font-size: 28px;
+    font-size: 30px;
+    letter-spacing: -0.01em;
     margin: 0 0 12px 0;
 }
 
 h3 {
-    font-size: 21px;
-    margin: 32px 0 10px 0;
+    font-size: 24px;
+    margin: 0 0 10px 0;
 }
 
 p {
@@ -110,23 +87,29 @@ p {
 }
 
 a {
-    color: var(--link);
+    color: var(--green);
     text-underline-offset: 3px;
 }
 
 a:hover {
-    color: var(--link-hover);
+    color: var(--green-hover);
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
 }
 
 /* Text you highlight with the mouse */
 ::selection {
-    background-color: var(--selection);
-    color: var(--text);
+    background-color: var(--ink);
+    color: var(--page);
 }
 
 /* Outline when you use the keyboard (Tab key) */
 :focus-visible {
-    outline: 3px solid var(--focus);
+    outline: 3px solid var(--green);
     outline-offset: 2px;
 }
 
@@ -147,93 +130,106 @@ header {
     top: 0;
     z-index: 10;
     background-color: var(--page);
-    border-bottom: 1px solid var(--line);
+    border-bottom: 8px solid var(--ink);
     transition: background-color 0.3s;
 }
 
+/* site name and dark mode switch on the first row, tabs on the second row */
 .header-inner {
-    max-width: 1140px;
+    max-width: 1120px;
     margin: 0 auto;
-    padding: 14px 24px;
+    padding: 14px 24px 0;
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 20px;
+    gap: 10px 16px;
 }
 
 .logo {
     margin: 0 auto 0 0;
     font-size: 20px;
-    font-weight: bold;
-    color: var(--heading);
+    font-weight: 800;
 }
 
 .tabs {
+    order: 3;
+    width: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
 }
 
 .tab-button {
-    font-family: inherit;
     font-size: 15px;
-    font-weight: bold;
-    color: var(--text-soft);
+    font-weight: 600;
+    color: var(--ink);
     background-color: transparent;
     border: none;
-    padding: 9px 16px;
-    border-radius: 999px;
+    padding: 12px 16px;
     cursor: pointer;
 }
 
 .tab-button:hover {
-    background-color: var(--hover);
+    background-color: var(--wash);
 }
 
 .tab-button.active {
-    background-color: var(--green);
-    color: var(--on-green);
+    background-color: var(--ink);
+    color: var(--page);
 }
 
-/* Dark mode / light mode button */
+/* Dark mode / light mode switch: sun on the left, moon on the right.
+   The dark block sits behind whichever one is on. */
 .theme-toggle {
+    position: relative;
     display: flex;
-    align-items: center;
-    justify-content: center;
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    color: var(--heading);
-    background-color: transparent;
-    border: 1px solid var(--line);
-    border-radius: 50%;
+    width: 68px;
+    height: 36px;
+    padding: 2px;
+    background-color: var(--page);
+    border: 2px solid var(--ink);
     cursor: pointer;
-    transition: background-color 0.2s, border-color 0.2s;
 }
 
-.theme-toggle:hover {
-    background-color: var(--hover);
-    border-color: var(--pill-line);
+.theme-toggle::before {
+    content: "";
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 30px;
+    height: 28px;
+    background-color: var(--ink);
+    transition: transform 0.2s ease-out;
 }
 
-.icon-sun {
-    display: none;
+html.dark .theme-toggle::before {
+    transform: translateX(30px);
 }
 
-html.dark .icon-sun {
-    display: block;
+.theme-toggle svg {
+    position: relative;
+    width: 30px;
+    height: 28px;
+    padding: 6px 7px;
+    color: var(--ink);
+    transition: color 0.2s;
 }
 
-html.dark .icon-moon {
-    display: none;
+.theme-toggle .icon-sun,
+html.dark .theme-toggle .icon-moon {
+    color: var(--page);
+}
+
+html.dark .theme-toggle .icon-sun {
+    color: var(--ink);
 }
 
 
 /* ----- Main area ----- */
 main {
-    max-width: 1140px;
+    max-width: 1120px;
     margin: 0 auto;
-    padding: 28px 24px 64px;
+    padding: 44px 24px 72px;
 }
 
 /* Only the active tab is shown */
@@ -243,7 +239,7 @@ main {
 
 .tab-content.active {
     display: block;
-    animation: fadeIn 0.35s ease-out;
+    animation: fadeIn 0.3s ease-out;
 }
 
 @keyframes fadeIn {
@@ -257,23 +253,25 @@ main {
     }
 }
 
-/* The big green box at the top of every tab */
+/* The top of every tab: big heading on the left, photo or label on the right */
 .banner {
-    background-color: var(--banner);
-    border-radius: 20px;
-    padding: 52px 56px;
-    margin-bottom: 48px;
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 56px;
+    align-items: start;
+    margin-bottom: 56px;
 }
 
 .banner h1 {
-    font-size: 48px;
-    margin: 0 0 14px 0;
+    font-size: 60px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0 0 18px 0;
 }
 
-.banner p {
-    font-size: 19px;
-    max-width: 62ch;
-    color: var(--text-soft);
+.banner h1 + p {
+    font-size: 21px;
+    max-width: 54ch;
     margin-bottom: 0;
 }
 
@@ -281,36 +279,37 @@ main {
     margin-top: 24px;
 }
 
-/* banners that have a photo: text on the left, photo on the right */
-.banner.with-photo {
-    display: grid;
-    grid-template-columns: 1.2fr 1fr;
-    gap: 40px;
-    align-items: center;
-}
-
 .banner-photo {
     margin: 0;
 }
 
-.banner-photo img {
+.banner-photo img,
+.wide-photo img {
     display: block;
     width: 100%;
     height: auto;
     aspect-ratio: 4 / 3;
     object-fit: cover;
-    border-radius: 14px;
 }
 
-.banner-photo figcaption {
+/* the wide photo under the Home banner */
+.wide-photo {
+    margin: 0 0 64px 0;
+}
+
+.wide-photo img {
+    aspect-ratio: 5 / 2;
+}
+
+figcaption {
     font-size: 14px;
     line-height: 1.4;
-    color: var(--muted);
-    margin-top: 10px;
+    color: var(--soft);
+    margin-top: 8px;
 }
 
 .section {
-    margin-bottom: 56px;
+    margin-bottom: 64px;
 }
 
 .section:last-child {
@@ -320,22 +319,81 @@ main {
 .two-columns {
     display: grid;
     grid-template-columns: 1.1fr 1fr;
-    gap: 48px;
+    gap: 56px;
     align-items: start;
-    margin-bottom: 56px;
+    margin-bottom: 64px;
+}
+
+
+/* ----- The label (Waste Facts on the Home tab) ----- */
+.label {
+    border: 2px solid var(--ink);
+    padding: 10px 16px 16px;
+}
+
+.label-title {
+    font-size: 40px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px 0;
+}
+
+/* thick rule above the rows, like on a real label */
+#facts-rows {
+    margin-top: 14px;
+    border-top: 10px solid var(--ink);
+}
+
+.label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 16px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--hair);
+}
+
+.label-row:last-child {
+    border-bottom: 5px solid var(--ink);
+}
+
+.label-row span {
+    font-weight: 600;
+}
+
+.label-row small {
+    display: block;
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--soft);
+}
+
+.label-row b {
+    font-size: 22px;
+    font-weight: 800;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+}
+
+.label-note {
+    font-size: 14px;
+    color: var(--soft);
+    margin: 8px 0 0 0;
+}
+
+.label .small-button {
+    margin-top: 12px;
 }
 
 
 /* ----- Buttons ----- */
 .big-button {
-    font-family: inherit;
     font-size: 17px;
-    font-weight: bold;
+    font-weight: 600;
     color: var(--on-green);
     background-color: var(--green);
     border: none;
-    padding: 13px 26px;
-    border-radius: 999px;
+    padding: 12px 22px;
     cursor: pointer;
     transition: background-color 0.2s;
 }
@@ -349,21 +407,23 @@ main {
     cursor: not-allowed;
 }
 
-.small-button {
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: bold;
-    color: var(--heading);
-    background-color: var(--box);
-    border: 2px solid var(--green);
-    padding: 8px 18px;
-    border-radius: 999px;
+.small-button,
+.pledge-button,
+.choice-button {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    background-color: var(--page);
+    border: 2px solid var(--ink);
+    padding: 8px 16px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
 }
 
-.small-button:hover {
-    background-color: var(--hover);
+.small-button:hover,
+.pledge-button:hover,
+.choice-button:hover {
+    background-color: var(--wash);
 }
 
 /* Buttons you pick from (quiz answers, plastic items, yes/no) */
@@ -375,32 +435,22 @@ main {
 }
 
 .choice-button {
-    font-family: inherit;
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--heading);
-    background-color: var(--box);
-    border: 2px solid var(--green);
+    font-size: 17px;
     padding: 10px 18px;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.choice-button:hover {
-    background-color: var(--hover);
 }
 
 .choice-button.selected,
-.choice-button.right {
+.choice-button.right,
+.pledge-button.pledged {
     background-color: var(--green);
+    border-color: var(--green);
     color: var(--on-green);
 }
 
 .choice-button.wrong {
-    background-color: var(--bad-bg);
-    border-color: var(--bad-line);
-    color: var(--bad-text);
+    background-color: var(--red-wash);
+    border-color: var(--red);
+    color: var(--red);
 }
 
 .choice-button:disabled {
@@ -409,8 +459,8 @@ main {
 
 /* Messages that appear after you click something */
 .result {
-    font-weight: bold;
-    min-height: 1.6em;
+    font-weight: 600;
+    min-height: 1.55em;
     margin-top: 14px;
 }
 
@@ -421,27 +471,26 @@ main {
 }
 
 .result.good {
-    color: var(--heading);
+    color: var(--green);
 }
 
 .result.bad {
-    color: var(--bad-text);
+    color: var(--red);
 }
 
 
-/* ----- Home tab ----- */
+/* ----- Home tab: topics as label rows ----- */
 .topic-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
+    border-top: 10px solid var(--ink);
 }
 
 .topic-card {
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 140px 190px 1fr auto;
+    gap: 24px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--hair);
 }
 
 .topic-photo {
@@ -450,25 +499,15 @@ main {
     height: auto;
     aspect-ratio: 3 / 2;
     object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 16px;
 }
 
 .topic-card h3 {
-    margin-top: 0;
-}
-
-.photo-note {
-    margin-top: 14px;
+    font-size: 22px;
+    margin: 0;
 }
 
 .topic-card p {
-    flex-grow: 1;
-    color: var(--text-soft);
-}
-
-.topic-card .small-button {
-    align-self: flex-start;
+    margin: 0;
 }
 
 .pledge-list {
@@ -486,19 +525,16 @@ main {
     list-style: none;
     padding: 0;
     margin: 0;
+    border-top: 5px solid var(--ink);
 }
 
 .fact-list li {
-    border-top: 1px solid var(--line);
-    padding: 18px 0 6px;
-}
-
-.fact-list li:last-child {
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--hair);
+    padding: 16px 0 4px;
 }
 
 .fact-list strong {
-    color: var(--heading);
+    font-weight: 800;
 }
 
 /* bin colour words in the recycling facts */
@@ -516,21 +552,35 @@ main {
 
 .source {
     font-size: 14px;
-    color: var(--muted);
+    color: var(--soft);
 }
 
 
-/* ----- Activity box (the interactive parts) ----- */
+/* ----- Activity box (the interactive parts), drawn like a label ----- */
 .activity {
-    background-color: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 32px;
+    border: 2px solid var(--ink);
+    padding: 10px 16px 18px;
+}
+
+.activity h2 {
+    font-size: 36px;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin: 0;
+}
+
+/* the line under the title, with the thick rule */
+.activity h2 + p {
+    font-size: 15px;
+    margin: 6px 0 16px 0;
+    padding-bottom: 8px;
+    border-bottom: 10px solid var(--ink);
 }
 
 .activity h3 {
-    border-top: 1px solid var(--line);
-    padding-top: 28px;
+    margin-top: 26px;
+    padding-top: 14px;
+    border-top: 5px solid var(--ink);
 }
 
 .check-group {
@@ -544,16 +594,14 @@ main {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background-color: var(--box);
-    border: 2px solid var(--pill-line);
-    border-radius: 999px;
-    padding: 8px 16px;
-    font-weight: bold;
+    border: 2px solid var(--ink);
+    padding: 8px 14px;
+    font-weight: 600;
     cursor: pointer;
 }
 
 .check-pill:hover {
-    border-color: var(--green);
+    background-color: var(--wash);
 }
 
 .check-pill input {
@@ -580,45 +628,44 @@ main {
 
 /* ----- Recycling bar chart ----- */
 .chart {
-    margin: 20px 0 10px;
+    margin: 16px 0 10px;
+    border-top: 5px solid var(--ink);
 }
 
 .bar-row {
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--hair);
 }
 
 .bar-label {
-    width: 100px;
-    font-weight: bold;
-    font-size: 15px;
+    width: 104px;
+    font-weight: 600;
+    font-size: 16px;
 }
 
 .bar-track {
     flex: 1;
-    height: 26px;
-    background-color: var(--banner);
-    border-radius: 999px;
-    overflow: hidden;
+    height: 14px;
+    background-color: var(--wash);
 }
 
 .bar-fill {
     height: 100%;
     width: 0%;
-    background-color: var(--green);
-    border-radius: 999px;
+    background-color: var(--ink);
     transition: width 1s ease-out;
 }
 
 .bar-fill.target {
-    background-color: var(--target-bar);
+    background-color: var(--green);
 }
 
 .bar-value {
-    width: 64px;
-    font-weight: bold;
+    width: 68px;
+    font-weight: 800;
     text-align: right;
     font-variant-numeric: tabular-nums;
 }
@@ -628,37 +675,32 @@ main {
 .game-top {
     display: flex;
     justify-content: space-between;
-    font-weight: bold;
-    color: var(--text-soft);
+    font-weight: 600;
     font-size: 15px;
 }
 
 .sort-item {
-    font-size: 30px;
-    font-weight: bold;
-    text-align: center;
-    color: var(--text);
-    background-color: var(--box);
-    border: 2px dashed var(--pill-line);
-    border-radius: 16px;
-    padding: 26px 16px;
-    margin: 14px 0 18px;
+    font-size: 40px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin: 22px 0;
 }
 
 .bins {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+    gap: 8px;
 }
 
 .bin-button {
-    font-family: inherit;
-    font-size: 17px;
-    font-weight: bold;
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.2;
+    text-align: left;
     color: #ffffff;
     border: none;
-    border-radius: 14px;
-    padding: 16px 10px;
+    padding: 16px 14px;
     cursor: pointer;
     transition: transform 0.15s;
 }
@@ -666,7 +708,7 @@ main {
 .bin-button span {
     display: block;
     font-size: 14px;
-    font-weight: normal;
+    font-weight: 400;
 }
 
 .bin-button:hover {
@@ -674,7 +716,7 @@ main {
 }
 
 .bin-button:disabled {
-    opacity: 0.55;
+    opacity: 0.5;
     cursor: default;
     transform: none;
 }
@@ -697,11 +739,16 @@ main {
     background-color: #4f5b62;
 }
 
+.activity .small-button {
+    margin-top: 4px;
+}
+
 
 /* ----- Old clothes helper ----- */
 .question {
-    font-size: 21px;
-    font-weight: bold;
+    font-size: 24px;
+    font-weight: 800;
+    line-height: 1.2;
     margin-top: 16px;
 }
 
@@ -711,6 +758,7 @@ main {
     list-style: none;
     padding: 0;
     margin: 0;
+    border-top: 5px solid var(--ink);
 }
 
 .tip-list li {
@@ -718,35 +766,12 @@ main {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    padding: 14px 0;
-    border-top: 1px solid var(--line);
-}
-
-.tip-list li:last-child {
-    border-bottom: 1px solid var(--line);
+    padding: 12px 0;
+    border-bottom: 1px solid var(--hair);
 }
 
 .pledge-button {
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: bold;
-    color: var(--heading);
-    background-color: var(--box);
-    border: 2px solid var(--green);
-    padding: 8px 18px;
-    border-radius: 999px;
-    cursor: pointer;
     white-space: nowrap;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.pledge-button:hover {
-    background-color: var(--hover);
-}
-
-.pledge-button.pledged {
-    background-color: var(--green);
-    color: var(--on-green);
 }
 
 .next-row {
@@ -773,9 +798,10 @@ main {
 }
 
 label,
-legend {
+legend,
+.field-label {
     display: block;
-    font-weight: bold;
+    font-weight: 600;
     margin-bottom: 6px;
 }
 
@@ -788,110 +814,22 @@ input[type="email"],
 input[type="number"],
 textarea {
     width: 100%;
-    font-family: inherit;
     font-size: 17px;
-    color: var(--text);
-    background-color: var(--box);
-    border: 1px solid var(--input-line);
-    border-radius: 10px;
-    padding: 11px 14px;
+    color: var(--ink);
+    background-color: var(--page);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    padding: 10px 12px;
 }
 
 input:focus,
 textarea:focus {
-    border-color: var(--green);
-    outline: 3px solid var(--selection);
+    outline: 3px solid var(--green);
+    outline-offset: 2px;
 }
 
 textarea {
     resize: vertical;
-}
-
-/* labels that are not <label> tags */
-.field-label {
-    font-weight: bold;
-    margin-bottom: 6px;
-}
-
-/* my own dropdown (Which tab did you like most?) */
-.dropdown {
-    position: relative;
-}
-
-.dropdown-button {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-family: inherit;
-    font-size: 17px;
-    color: var(--text);
-    background-color: var(--box);
-    border: 1px solid var(--input-line);
-    border-radius: 10px;
-    padding: 11px 14px;
-    cursor: pointer;
-    text-align: left;
-}
-
-.dropdown-button:hover,
-.dropdown-button[aria-expanded="true"] {
-    border-color: var(--green);
-}
-
-.dropdown-arrow {
-    color: var(--heading);
-    transition: transform 0.2s;
-}
-
-.dropdown-button[aria-expanded="true"] .dropdown-arrow {
-    transform: rotate(180deg);
-}
-
-.dropdown-list {
-    position: absolute;
-    top: calc(100% + 6px);
-    left: 0;
-    right: 0;
-    z-index: 5;
-    background-color: var(--box);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 6px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-}
-
-.dropdown-option {
-    display: block;
-    width: 100%;
-    font-family: inherit;
-    font-size: 16px;
-    color: var(--text);
-    background-color: transparent;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 12px;
-    text-align: left;
-    cursor: pointer;
-}
-
-.dropdown-option:hover,
-.dropdown-option:focus-visible {
-    background-color: var(--hover);
-    outline: none;
-}
-
-.dropdown-option.chosen {
-    background-color: var(--green);
-    color: var(--on-green);
-    font-weight: bold;
-}
-
-/* the chosen option needs its own keyboard outline because it's already green */
-.dropdown-option.chosen:focus-visible {
-    background-color: var(--green);
-    outline: 2px solid var(--on-green);
-    outline-offset: -4px;
 }
 
 /* number boxes: same look, without the tiny up/down arrows */
@@ -906,15 +844,85 @@ input[type="number"]::-webkit-outer-spin-button {
     margin: 0;
 }
 
-input[type="text"]:hover,
-input[type="email"]:hover,
-input[type="number"]:hover,
-textarea:hover {
-    border-color: var(--green);
-}
-
 ::placeholder {
     color: var(--placeholder);
+}
+
+/* my own dropdowns (Waste Facts on Home, and the favourite tab in the form) */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-button {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 17px;
+    color: var(--ink);
+    background-color: var(--page);
+    border: 2px solid var(--ink);
+    padding: 10px 12px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.dropdown-button:hover,
+.dropdown-button[aria-expanded="true"] {
+    background-color: var(--wash);
+}
+
+.dropdown-arrow {
+    flex-shrink: 0;
+    transition: transform 0.2s;
+}
+
+.dropdown-button[aria-expanded="true"] .dropdown-arrow {
+    transform: rotate(180deg);
+}
+
+/* the open list sits on top of what is below it */
+.dropdown-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    background-color: var(--page);
+    border: 2px solid var(--ink);
+    border-top: none;
+}
+
+.dropdown-option {
+    display: block;
+    width: 100%;
+    font-size: 17px;
+    color: var(--ink);
+    background-color: transparent;
+    border: none;
+    border-top: 1px solid var(--hair);
+    padding: 10px 12px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.dropdown-option:hover,
+.dropdown-option:focus-visible {
+    background-color: var(--wash);
+    outline: none;
+}
+
+.dropdown-option.chosen {
+    background-color: var(--ink);
+    color: var(--page);
+}
+
+/* the chosen option needs its own keyboard outline because it's already filled in */
+.dropdown-option.chosen:focus-visible {
+    background-color: var(--ink);
+    outline: 2px solid var(--page);
+    outline-offset: -4px;
 }
 
 .rating {
@@ -928,36 +936,33 @@ textarea:hover {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    border: 2px solid var(--pill-line);
-    border-radius: 999px;
-    padding: 6px 16px;
+    border: 2px solid var(--ink);
+    padding: 6px 14px;
     margin: 0 6px 6px 0;
     cursor: pointer;
 }
 
 .rating-pill:hover {
-    border-color: var(--green);
+    background-color: var(--wash);
 }
 
 .hint {
     font-size: 14px;
-    color: var(--muted);
+    color: var(--soft);
     margin-top: 6px;
 }
 
 
 /* ----- Footer ----- */
 footer {
-    border-top: 1px solid var(--line);
-    background-color: var(--panel);
-    color: var(--muted);
-    font-size: 15px;
+    border-top: 8px solid var(--ink);
+    font-size: 16px;
 }
 
 .footer-inner {
-    max-width: 1140px;
+    max-width: 1120px;
     margin: 0 auto;
-    padding: 40px 24px 28px;
+    padding: 32px 24px 40px;
     display: grid;
     grid-template-columns: 2fr 1fr 1fr;
     gap: 32px;
@@ -969,17 +974,17 @@ footer {
 
 .footer-about p {
     max-width: 38ch;
+    color: var(--soft);
 }
 
-.footer-name {
-    font-size: 18px;
-    font-weight: bold;
-    color: var(--heading);
+.footer-about .footer-name {
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--ink);
 }
 
 .footer-heading {
-    font-weight: bold;
-    color: var(--text);
+    font-weight: 800;
 }
 
 .footer-links {
@@ -993,48 +998,47 @@ footer {
 }
 
 .footer-links a {
-    color: var(--text-soft);
+    color: var(--ink);
     text-decoration: none;
 }
 
 .footer-links a:hover {
-    color: var(--link);
+    color: var(--green);
     text-decoration: underline;
 }
 
 
-/* ----- Small laptops and tablets: the tabs don't fit next to the site name ----- */
-@media (max-width: 1100px) {
-    /* site name and dark mode button on the first row, tabs on the second row */
-    .header-inner {
-        flex-wrap: wrap;
-        gap: 8px 12px;
-    }
-
-    .tabs {
-        order: 3;
-        width: 100%;
-    }
-}
-
-/* ----- Tablets ----- */
-@media (max-width: 960px) {
-    .topic-grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
+/* ----- Tablets: one column ----- */
+@media (max-width: 900px) {
+    .banner,
     .two-columns {
         grid-template-columns: 1fr;
+        gap: 32px;
     }
 
-    /* photo goes under the text, and wider so it isn't too tall */
-    .banner.with-photo {
-        grid-template-columns: 1fr;
-        gap: 24px;
+    .banner h1 {
+        font-size: 44px;
     }
 
-    .banner-photo img {
+    .banner-photo img,
+    .wide-photo img {
         aspect-ratio: 16 / 9;
+    }
+
+    /* photo on the left, the name, text and button stacked on the right */
+    .topic-card {
+        grid-template-columns: 130px 1fr;
+        gap: 6px 18px;
+        align-items: start;
+    }
+
+    .topic-photo {
+        grid-row: 1 / 4;
+    }
+
+    .topic-card .small-button {
+        justify-self: start;
+        margin-top: 6px;
     }
 }
 
@@ -1042,54 +1046,64 @@ footer {
 @media (max-width: 760px) {
     /* the header is taller on phones because the tabs wrap */
     html {
-        scroll-padding-top: 150px;
+        scroll-padding-top: 180px;
     }
 
     body {
-        font-size: 16px;
-    }
-
-    .header-inner {
-        padding: 12px 16px;
-    }
-
-    .theme-toggle {
-        width: 36px;
-        height: 36px;
-    }
-
-    .tab-button {
-        padding: 8px 12px;
-    }
-
-    main {
-        padding: 20px 16px 48px;
-    }
-
-    .banner {
-        padding: 30px 24px;
-        border-radius: 16px;
-        margin-bottom: 36px;
-    }
-
-    .banner h1 {
-        font-size: 34px;
-    }
-
-    .banner p {
         font-size: 17px;
     }
 
+    .header-inner {
+        padding: 10px 16px 0;
+    }
+
+    /* smaller name so the dark mode switch fits next to it */
+    .logo {
+        font-size: 17px;
+    }
+
+    .tab-button {
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    main {
+        padding: 28px 16px 56px;
+    }
+
+    .banner {
+        margin-bottom: 40px;
+    }
+
+    .banner h1 {
+        font-size: 38px;
+    }
+
+    .banner h1 + p {
+        font-size: 18px;
+    }
+
+    .wide-photo,
+    .section,
+    .two-columns {
+        margin-bottom: 48px;
+    }
+
     h2 {
-        font-size: 24px;
+        font-size: 26px;
     }
 
-    .topic-grid {
-        grid-template-columns: 1fr;
+    .label-title,
+    .activity h2 {
+        font-size: 32px;
     }
 
-    .activity {
-        padding: 22px 18px;
+    .sort-item {
+        font-size: 30px;
+    }
+
+    .topic-card {
+        grid-template-columns: 96px 1fr;
     }
 
     .tip-list li {
@@ -1114,7 +1128,7 @@ footer {
 
     .footer-inner {
         grid-template-columns: 1fr 1fr;
-        padding: 32px 16px 20px;
+        padding: 28px 16px 32px;
     }
 
     .footer-about {
@@ -1122,15 +1136,40 @@ footer {
     }
 }
 
-/* ----- Very small phones: smaller header so it doesn't fill the screen ----- */
+/* ----- Very small phones ----- */
 @media (max-width: 360px) {
+    .header-inner {
+        gap: 10px 12px;
+    }
+
     .logo {
-        font-size: 17px;
+        font-size: 15px;
+    }
+
+    /* a slightly narrower switch */
+    .theme-toggle {
+        width: 60px;
+    }
+
+    .theme-toggle::before {
+        width: 26px;
+    }
+
+    html.dark .theme-toggle::before {
+        transform: translateX(26px);
+    }
+
+    .theme-toggle svg {
+        width: 26px;
+        padding: 6px 5px;
     }
 
     .tab-button {
-        font-size: 14px;
-        padding: 8px 10px;
+        padding: 9px 8px;
+    }
+
+    .label-row b {
+        font-size: 19px;
     }
 }
 
@@ -1143,7 +1182,9 @@ footer {
     body,
     header,
     .bar-fill,
-    .bin-button {
+    .bin-button,
+    .theme-toggle::before,
+    .theme-toggle svg {
         transition: none;
     }
 

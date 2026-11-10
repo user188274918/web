@@ -7,6 +7,10 @@
     <meta name="description" content="Facts, games and tips about food waste, plastic waste, recycling and textile waste in Malaysia.">
     <!-- Leaf icon from Lucide (lucide.dev), ISC licence -->
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml">
+    <!-- Archivo font from Google Fonts. If it can't load, the page uses Arial -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script>
         // load dark mode before the page shows, so it doesn't flash white
@@ -36,12 +40,9 @@
                 <button class="tab-button" id="btn-feedback" onclick="showTab('feedback')">Feedback</button>
             </nav>
 
-            <!-- Dark mode / light mode button. Icons from Lucide (lucide.dev), ISC licence -->
+            <!-- Dark mode / light mode switch. Sun and moon icons from Lucide (lucide.dev), ISC licence -->
             <button id="theme-toggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Switch to dark mode" title="Switch to dark mode">
-                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
-                </svg>
-                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                     <circle cx="12" cy="12" r="4" />
                     <path d="M12 2v2" />
                     <path d="M12 20v2" />
@@ -52,6 +53,9 @@
                     <path d="m6.34 17.66-1.41 1.41" />
                     <path d="m19.07 4.93-1.41 1.41" />
                 </svg>
+                <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
+                </svg>
             </button>
         </div>
     </header>
@@ -61,17 +65,46 @@
         <!-- ===================== HOME TAB ===================== -->
         <section id="home" class="tab-content active">
 
-            <div class="banner with-photo">
+            <div class="banner">
                 <div>
                     <h1 tabindex="-1">Small habits, less waste</h1>
                     <p>Every day, Malaysians throw away thousands of tonnes of food, plastic and clothes. This website looks at four kinds of waste in Malaysia. Each tab has real facts with sources, something to try, and easy ways to waste less.</p>
                     <button class="big-button" onclick="showTab('food')">Start with Food Waste</button>
                 </div>
-                <figure class="banner-photo">
-                    <img src="images/home.jpg" width="1000" height="750" alt="Plastic bottles, wrappers and other rubbish piled up at the edge of the water.">
-                    <figcaption>Bottles, wrappers and other rubbish at the water's edge. Photo: <a href="https://commons.wikimedia.org/wiki/File:Bord_de_l%E2%80%99eau_satur%C3%A9.jpg" target="_blank" rel="noopener">Merstel007</a>, CC0, cropped.</figcaption>
-                </figure>
+
+                <!-- Waste Facts label. The dropdown changes which facts it shows -->
+                <div class="label">
+                    <h2 class="label-title">Waste Facts</h2>
+                    <p class="field-label" id="facts-label">Show facts for</p>
+                    <div class="dropdown" id="facts-dropdown">
+                        <button type="button" class="dropdown-button" id="facts-button" onclick="toggleDropdown('facts')" aria-expanded="false" aria-controls="facts-list" aria-labelledby="facts-label facts-button">
+                            <span id="facts-text">One number from each topic</span>
+                            <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+                        </button>
+                        <div class="dropdown-list hidden" id="facts-list">
+                            <button type="button" class="dropdown-option chosen" onclick="pickFacts(this, 'all')">One number from each topic</button>
+                            <button type="button" class="dropdown-option" onclick="pickFacts(this, 'food')">Food Waste</button>
+                            <button type="button" class="dropdown-option" onclick="pickFacts(this, 'plastic')">Plastic Waste</button>
+                            <button type="button" class="dropdown-option" onclick="pickFacts(this, 'recycling')">Recycling</button>
+                            <button type="button" class="dropdown-option" onclick="pickFacts(this, 'textile')">Textile Waste</button>
+                        </div>
+                    </div>
+                    <!-- script.js fills these rows in again when you pick from the dropdown -->
+                    <div id="facts-rows" aria-live="polite">
+                        <div class="label-row"><span>Food wasted<small>by each person in a year</small></span><b>81 kg</b></div>
+                        <div class="label-row"><span>Plastic packaging used<small>by each person in a year</small></span><b>16.78 kg</b></div>
+                        <div class="label-row"><span>Recycling rate<small>in 2023</small></span><b>35.38%</b></div>
+                        <div class="label-row"><span>Textile waste thrown away<small>every day, says Kloth Cares</small></span><b>2,000+ tonnes</b></div>
+                    </div>
+                    <p class="label-note">Each number has its source on its topic tab.</p>
+                    <button id="facts-open" class="small-button hidden" onclick="showTab(factsTopic)">Open Food Waste</button>
+                </div>
             </div>
+
+            <figure class="wide-photo">
+                <img src="images/home.jpg" width="1000" height="750" alt="Plastic bottles, wrappers and other rubbish piled up at the edge of the water.">
+                <figcaption>Bottles, wrappers and other rubbish at the water's edge. Photo: <a href="https://commons.wikimedia.org/wiki/File:Bord_de_l%E2%80%99eau_satur%C3%A9.jpg" target="_blank" rel="noopener">Merstel007</a>, CC0, cropped.</figcaption>
+            </figure>
 
             <div class="section">
                 <h2>Guess the number</h2>
@@ -112,7 +145,6 @@
                         <button class="small-button" onclick="showTab('textile')">Open Textile Waste</button>
                     </div>
                 </div>
-                <p class="source photo-note">Photo credits are on each topic's tab.</p>
             </div>
 
             <div class="section">
@@ -127,7 +159,7 @@
         <!-- ===================== FOOD WASTE TAB ===================== -->
         <section id="food" class="tab-content">
 
-            <div class="banner with-photo">
+            <div class="banner">
                 <div>
                     <h1 tabindex="-1">Food Waste</h1>
                     <p>A lot of the food Malaysians throw away was still good to eat. Most of it ends up in landfills.</p>
@@ -197,7 +229,7 @@
         <!-- ===================== PLASTIC WASTE TAB ===================== -->
         <section id="plastic" class="tab-content">
 
-            <div class="banner with-photo">
+            <div class="banner">
                 <div>
                     <h1 tabindex="-1">Plastic Waste</h1>
                     <p>Bags, straws, cups and takeaway boxes are used for a few minutes, then thrown away. Plastic can stay in the environment for a very long time.</p>
@@ -280,7 +312,7 @@
         <!-- ===================== RECYCLING TAB ===================== -->
         <section id="recycling" class="tab-content">
 
-            <div class="banner with-photo">
+            <div class="banner">
                 <div>
                     <h1 tabindex="-1">Recycling</h1>
                     <p>Recycling turns old paper, glass, plastic and tins into new things. It only works if we put the right things in the right bin.</p>
@@ -373,7 +405,7 @@
         <!-- ===================== TEXTILE WASTE TAB ===================== -->
         <section id="textile" class="tab-content">
 
-            <div class="banner with-photo">
+            <div class="banner">
                 <div>
                     <h1 tabindex="-1">Textile Waste</h1>
                     <p>Textile waste is old clothes, shoes, bags and fabric. Many clothes are only worn a few times before they are thrown away.</p>
@@ -454,8 +486,10 @@
         <section id="feedback" class="tab-content">
 
             <div class="banner">
-                <h1 tabindex="-1">Feedback</h1>
-                <p>What did you think of this website? Your feedback helps me make it better.</p>
+                <div>
+                    <h1 tabindex="-1">Feedback</h1>
+                    <p>What did you think of this website? Your feedback helps me make it better.</p>
+                </div>
             </div>
 
             <!-- Feedback is sent to my email by Formspree (formspree.io) -->
@@ -482,11 +516,11 @@
                 </div>
 
                 <div class="form-field">
-                    <!-- my own dropdown, so the open list matches the website -->
+                    <!-- my own dropdown, the same kind as the one on the Home tab -->
                     <p class="field-label" id="fav-label">Which tab did you like most?</p>
                     <div class="dropdown" id="fav-dropdown">
                         <input type="hidden" name="favourite_tab" id="fb-favourite" value="Food Waste">
-                        <button type="button" class="dropdown-button" id="fav-button" onclick="toggleDropdown()" aria-expanded="false" aria-controls="fav-list" aria-labelledby="fav-label fav-button">
+                        <button type="button" class="dropdown-button" id="fav-button" onclick="toggleDropdown('fav')" aria-expanded="false" aria-controls="fav-list" aria-labelledby="fav-label fav-button">
                             <span id="fav-text">Food Waste</span>
                             <svg class="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
                         </button>

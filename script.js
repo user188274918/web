@@ -453,10 +453,16 @@ function calculateWater() {
 }
 
 
-// ---------- FEEDBACK: MY OWN DROPDOWN ----------
-function toggleDropdown() {
-    let list = document.getElementById("fav-list");
-    let button = document.getElementById("fav-button");
+// ---------- MY OWN DROPDOWNS ----------
+// There are two: "facts" on the Home tab and "fav" in the feedback form.
+// name is the first part of the ids, for example "fav" for fav-button and fav-list.
+function getOptions(name) {
+    return document.getElementById(name + "-list").getElementsByClassName("dropdown-option");
+}
+
+function toggleDropdown(name) {
+    let list = document.getElementById(name + "-list");
+    let button = document.getElementById(name + "-button");
     list.classList.toggle("hidden");
 
     if (list.classList.contains("hidden")) {
@@ -468,50 +474,35 @@ function toggleDropdown() {
     }
 }
 
-function closeDropdown() {
-    document.getElementById("fav-list").classList.add("hidden");
-    document.getElementById("fav-button").setAttribute("aria-expanded", "false");
+function closeDropdown(name) {
+    document.getElementById(name + "-list").classList.add("hidden");
+    document.getElementById(name + "-button").setAttribute("aria-expanded", "false");
 }
 
-function setFavourite(option) {
-    let options = document.getElementsByClassName("dropdown-option");
+// marks one option as chosen and shows its text on the button
+function chooseOption(name, option) {
+    let options = getOptions(name);
     for (let i = 0; i < options.length; i++) {
         options[i].classList.remove("chosen");
     }
     option.classList.add("chosen");
-
-    // the hidden input is what gets sent with the form
-    document.getElementById("fb-favourite").value = option.textContent;
-    document.getElementById("fav-text").textContent = option.textContent;
+    document.getElementById(name + "-text").textContent = option.textContent;
 }
-
-function pickFavourite(option) {
-    setFavourite(option);
-    closeDropdown();
-    document.getElementById("fav-button").focus();
-}
-
-// close the dropdown when you click somewhere else
-document.addEventListener("click", function (event) {
-    if (!document.getElementById("fav-dropdown").contains(event.target)) {
-        closeDropdown();
-    }
-});
 
 // keyboard: Escape and Tab close it, up and down arrows open it and move between options
-document.getElementById("fav-dropdown").addEventListener("keydown", function (event) {
-    let options = document.getElementsByClassName("dropdown-option");
+function dropdownKeys(event, name) {
+    let options = getOptions(name);
     let current = Array.from(options).indexOf(document.activeElement);
-    let isClosed = document.getElementById("fav-list").classList.contains("hidden");
+    let isClosed = document.getElementById(name + "-list").classList.contains("hidden");
 
     if (event.key == "Escape") {
-        closeDropdown();
-        document.getElementById("fav-button").focus();
+        closeDropdown(name);
+        document.getElementById(name + "-button").focus();
     } else if (event.key == "Tab") {
-        closeDropdown();
+        closeDropdown(name);
     } else if (event.key == "ArrowDown" && isClosed) {
         event.preventDefault();
-        toggleDropdown();
+        toggleDropdown(name);
     } else if (event.key == "ArrowDown" && current < options.length - 1) {
         event.preventDefault();
         options[current + 1].focus();
@@ -519,7 +510,122 @@ document.getElementById("fav-dropdown").addEventListener("keydown", function (ev
         event.preventDefault();
         options[current - 1].focus();
     }
+}
+
+document.getElementById("facts-dropdown").addEventListener("keydown", function (event) {
+    dropdownKeys(event, "facts");
 });
+
+document.getElementById("fav-dropdown").addEventListener("keydown", function (event) {
+    dropdownKeys(event, "fav");
+});
+
+// close a dropdown when you click somewhere else
+document.addEventListener("click", function (event) {
+    if (!document.getElementById("facts-dropdown").contains(event.target)) {
+        closeDropdown("facts");
+    }
+    if (!document.getElementById("fav-dropdown").contains(event.target)) {
+        closeDropdown("fav");
+    }
+});
+
+
+// ---------- HOME: WASTE FACTS LABEL ----------
+// The facts for each choice in the dropdown. They are the same facts as on the topic tabs.
+let wasteFacts = {
+    all: [
+        { name: "Food wasted", note: "by each person in a year", value: "81 kg" },
+        { name: "Plastic packaging used", note: "by each person in a year", value: "16.78 kg" },
+        { name: "Recycling rate", note: "in 2023", value: "35.38%" },
+        { name: "Textile waste thrown away", note: "every day, says Kloth Cares", value: "2,000+ tonnes" }
+    ],
+    food: [
+        { name: "Food wasted", note: "by each person in a year", value: "81 kg" },
+        { name: "World average", note: "by each person in a year", value: "79 kg" },
+        { name: "Extra food waste expected", note: "during Ramadan 2023", value: "75,000 tonnes" },
+        { name: "Food wasted around the world", note: "in 2022", value: "1.05 billion tonnes" },
+        { name: "Share that came from homes", note: "around the world in 2022", value: "60%" }
+    ],
+    plastic: [
+        { name: "Plastic packaging used", note: "by each person in a year", value: "16.78 kg" },
+        { name: "Charge for a plastic bag", note: "in Selangor, since 1 January 2017", value: "20 sen" },
+        { name: "Goal to stop single-use plastics", note: "in Malaysia's roadmap", value: "by 2030" }
+    ],
+    recycling: [
+        { name: "Recycling rate", note: "in 2015", value: "15.7%" },
+        { name: "Recycling rate", note: "in 2021", value: "31.52%" },
+        { name: "Recycling rate", note: "in 2023", value: "35.38%" },
+        { name: "Target", note: "for 2025", value: "40%" },
+        { name: "Cost of not recycling", note: "in 2023 alone", value: "RM291 million" }
+    ],
+    textile: [
+        { name: "Textile waste thrown away", note: "every day, says Kloth Cares", value: "2,000+ tonnes" },
+        { name: "A smaller number", note: "in a year, from a UiTM article", value: "195,300 tonnes" },
+        { name: "Material recycled into new clothes", note: "around the world", value: "less than 1%" },
+        { name: "Water to make one cotton T-shirt", note: "about", value: "2,700 litres" }
+    ]
+};
+
+// remembers the choice, so the button under the label knows which tab to open
+let factsTopic = "all";
+
+function showFacts(topic) {
+    factsTopic = topic;
+    let facts = wasteFacts[topic];
+    let rows = document.getElementById("facts-rows");
+    rows.innerHTML = "";
+
+    // build one row for each fact: name and note on the left, number on the right
+    for (let i = 0; i < facts.length; i++) {
+        let row = document.createElement("div");
+        row.className = "label-row";
+
+        let name = document.createElement("span");
+        name.textContent = facts[i].name;
+        let note = document.createElement("small");
+        note.textContent = facts[i].note;
+        name.appendChild(note);
+
+        let value = document.createElement("b");
+        value.textContent = facts[i].value;
+
+        row.appendChild(name);
+        row.appendChild(value);
+        rows.appendChild(row);
+    }
+}
+
+function pickFacts(option, topic) {
+    chooseOption("facts", option);
+    showFacts(topic);
+
+    // the button under the label opens the tab that has the sources
+    let openButton = document.getElementById("facts-open");
+    if (topic == "all") {
+        openButton.classList.add("hidden");
+    } else {
+        openButton.textContent = "Open " + option.textContent;
+        openButton.classList.remove("hidden");
+    }
+
+    closeDropdown("facts");
+    document.getElementById("facts-button").focus();
+}
+
+
+// ---------- FEEDBACK: FAVOURITE TAB DROPDOWN ----------
+function setFavourite(option) {
+    chooseOption("fav", option);
+    // the hidden input is what gets sent with the form
+    document.getElementById("fb-favourite").value = option.textContent;
+}
+
+function pickFavourite(option) {
+    setFavourite(option);
+    closeDropdown("fav");
+    document.getElementById("fav-button").focus();
+}
 
 
 // ---------- FEEDBACK FORM (sent to my email with Formspree) ----------
@@ -564,7 +670,7 @@ function sendFeedback(event) {
             showMessage(status, "Thank you, " + name + "! Your feedback was sent.", "good");
             form.reset();
             // reset() doesn't know about my own dropdown, so put it back to the first option
-            setFavourite(document.getElementsByClassName("dropdown-option")[0]);
+            setFavourite(getOptions("fav")[0]);
         } else {
             // Formspree sends back a list of what went wrong
             return response.json().then(function (data) {
