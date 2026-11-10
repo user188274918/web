@@ -779,76 +779,7 @@ figcaption {
 }
 
 
-/* ----- Feedback form ----- */
-.feedback-form {
-    max-width: 720px;
-}
-
-.form-row {
-    display: flex;
-    gap: 20px;
-}
-
-.form-row .form-field {
-    flex: 1;
-}
-
-.form-field {
-    margin-bottom: 22px;
-}
-
-label,
-legend,
-.field-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-legend {
-    padding: 0;
-}
-
-input[type="text"],
-input[type="email"],
-input[type="number"],
-textarea {
-    width: 100%;
-    font-size: 17px;
-    color: var(--ink);
-    background-color: var(--page);
-    border: 2px solid var(--ink);
-    border-radius: 0;
-    padding: 10px 12px;
-}
-
-input:focus,
-textarea:focus {
-    outline: 3px solid var(--green);
-    outline-offset: 2px;
-}
-
-textarea {
-    resize: vertical;
-}
-
-/* number boxes: same look, without the tiny up/down arrows */
-input[type="number"] {
-    appearance: textfield;
-    -moz-appearance: textfield;
-}
-
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-}
-
-::placeholder {
-    color: var(--placeholder);
-}
-
-/* my own dropdowns (Waste Facts on Home, and the favourite tab in the form) */
+/* ----- My own dropdowns (Waste Facts on Home, and the favourite tab in the form) ----- */
 .dropdown {
     position: relative;
 }
@@ -923,6 +854,76 @@ input[type="number"]::-webkit-outer-spin-button {
     background-color: var(--ink);
     outline: 2px solid var(--page);
     outline-offset: -4px;
+}
+
+
+/* ----- Feedback form ----- */
+.feedback-form {
+    max-width: 720px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-row .form-field {
+    flex: 1;
+}
+
+.form-field {
+    margin-bottom: 22px;
+}
+
+label,
+legend,
+.field-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+legend {
+    padding: 0;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="number"],
+textarea {
+    width: 100%;
+    font-size: 17px;
+    color: var(--ink);
+    background-color: var(--page);
+    border: 2px solid var(--ink);
+    border-radius: 0;
+    padding: 10px 12px;
+}
+
+input:focus,
+textarea:focus {
+    outline: 3px solid var(--green);
+    outline-offset: 2px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+/* number boxes: same look, without the tiny up/down arrows */
+input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+::placeholder {
+    color: var(--placeholder);
 }
 
 .rating {
@@ -1183,6 +1184,7 @@ footer {
     header,
     .bar-fill,
     .bin-button,
+    .dropdown-arrow,
     .theme-toggle::before,
     .theme-toggle svg {
         transition: none;
